@@ -1,0 +1,17 @@
+*.iml
+
+.idea
+*.zip
+
+日程管理*
+
+src/test
+
+src/main/webapps/schedule/node_modules
+src/main/webapps/plugins
+src/main/webapps/dist
+src/main/webapps/particleground
+src/main/webapps/api
+src/main/webapps/xkm
+src/main/webapps/publics
+

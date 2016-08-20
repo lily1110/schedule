@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<meta charset="utf-8">
+<title>首页</title>
+<link href="../../publics/css/all_houtai.css" rel="stylesheet" rev="stylesheet">
+<link href="../../publics/css/all_houtai_screen.css" rel="stylesheet" rev="stylesheet">
+<link href="../custom/css/home.css" rel="stylesheet" rev="stylesheet">
+</head>
+<body>
+<div class="page_loading"><span class="text"></span><span class="load"></span></div>
+<input type="radio" name="hrm" id="hrm1" checked>
+<input type="radio" name="hrm" id="hrm2">
+<input type="radio" name="hrm" id="hrm3">
+<input type="radio" name="hrm" id="hrm4">
+<input type="radio" name="hrm" id="hrm5">
+<input type="radio" name="hrm" id="hrm6">
+<input type="radio" name="hrm" id="hrm7">
+<input type="checkbox" id="menus">
+<label for="menus" class="menus_open"><span></span></label>
+<div class="header">
+	<div class="logo"><b><span><img src="../imgs/logo.png" /></span></b></div>
+    <div class="right_top">
+        <div class="customer_info_tit">
+        	<span class="departName"></span><b class="changBtn">&#9660;切换科室</b>
+        	<ul class="choseDeparts">
+            </ul>
+        </div>
+        <div class="other">
+            <ul>
+                <li><a href="javascript:;" id="downAdmin">《管理员手册》</a></li>
+                <li><span id="loginName"></span></li>
+                <li><a href="javascript:;" id="logout">退出&#9755;</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="right_menu trans02">
+        <ul class="right_menu_ul">
+            <li>
+            	<label for="hrm1" lang="departMember" onclick="goContentPage(this, 'departmentMember/departmentMember.html');">成员管理</label>
+            </li>
+            <li>
+            	<label for="hrm2" lang="departCard" onclick="goContentPage(this, 'departmentCard/deparmentCard.html');">科室主页</label>
+            </li>
+            <li>
+            	<label for="hrm3" lang="schdule" onclick="goContentPage(this, 'schedule/schedule.html');">排班管理</label>
+            </li>
+            <li>
+            	<label for="hrm4" lang="patientAdmin" onclick="goContentPage(this, 'patientAdmin/patientIntoHospital.html');">患者管理</label>
+            </li>
+            <li>
+            	<label for="hrm5" lang="departAuthority" onclick="goContentPage(this, 'authority/authority.html');">权限管理</label>
+            </li>
+            <li>
+            	<label for="hrm6" lang="depart_placard" onclick="goContentPage(this, 'depart_placard/creat_depart_placard.html');">院科公告</label>
+            </li>
+            <li>
+            	<label for="hrm7" onclick="goContentPage(this, 'meet/conference.html');">会务助手</label>
+            </li>
+        </ul>
+        <div class="clear"></div>
+        <label for="menus" class="menus_close"><span></span></label>
+    </div>
+</div>
+
+<div class="index_contain">
+	<div class="page_left">
+    	<div class="page_blank"></div>
+        <div class="con_left">
+            <!--成员管理子分类-->
+            <div class="zmenu trans02 zmenu1" name="deMember">
+                <div class="depart_arch">
+                    <span class="depart_arch_tit">科室架构</span>
+                    <label for="add_group" class="add_group" onclick="Member.initGroupAdd();">&#10011;添加分组</label>
+                </div>
+                <ul class="zmenu_list depart_zlist">
+                    <li>
+                        <input type="radio" id="depart0" name="depart_list" checked>
+                        <label for="depart0" id="allDepartmentMember" onclick="goContentPage(this, 'departmentMember/departmentMember.html');">
+                        	<b><i></i></b>
+                            <span>全科成员</span>
+                            <font id="memberQua"></font>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            
+            <!--科室管理子分类-->
+            <div class="zmenu trans02 zmenu2" name="deCard">
+                <ul class="zmenu_list">
+                    <li>
+                        <input type="radio" id="depart_card" name="depart_card" checked>
+                        <label for="depart_card" lang="cardAdmin" id="cardA" onclick="goContentPage(this, 'departmentCard/deparmentCard.html');"><b><i></i></b>名片管理</label>
+                    </li>
+                    
+                    <li>
+                        <input type="radio" id="departStyle" name="depart_card">
+                        <label for="departStyle" lang="departStyle" onclick="goContentPage(this, 'depStyle/departmentStyle.html');"><b><i></i></b>风采管理</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="departData" name="depart_card">
+                        <label for="departData" lang="departData"><b><i></i></b>资料库管理</label>
+                        <ul class="level2">
+                            <li>
+                            	<input type="radio" id="database1" name="database">
+                            	<label for="database1" onclick="goContentPage(this, 'database/healthCareNotice.html');"><b><i></i></b>医护通知事项</label>
+                            </li>
+                            <li>
+                            	<input type="radio" id="database2" name="database">
+                                <label for="database2" onclick="goContentPage(this, 'database/healthForum.html');"><b><i></i></b>健康讲堂</label>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <!--排班管理子分类-->
+            <div class="zmenu trans02 zmenu3" name="desch">
+                <ul class="zmenu_list">
+                    <li>
+                        <input type="radio" id="manage_paiban1" name="manage_paiban">
+                        <label for="manage_paiban1" onclick="Schdule.initSchdule();"><b><i></i></b>排班</label>
+                        <ul class="level2">
+                            <li>
+                            	<input type="radio" id="manage_pbs1" name="manage_pbs">
+                            	<label for="manage_pbs1" id="newPbA" onclick="goContentPage(this, 'schedule/newSchedule.html');"><b><i></i></b>新建</label>
+                            </li>
+                            <li>
+                            	<input type="radio" id="manage_pbs2" name="manage_pbs">
+                                <label for="manage_pbs2" id="releasePb" onclick="Schdule.releaseList();"><b><i></i></b>已发布(<font name='releaseQuatity'></font>)</label>
+                            </li>
+                            <li>
+                            	<input type="radio" id="manage_pbs3" name="manage_pbs">
+                                <label for="manage_pbs3" id="saveDraft" onclick="Schdule.savePb();"><b><i></i></b>草稿箱(<font name='saveQuatity'></font>)</label>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <input type="radio" id="manage_paiban2" name="manage_paiban">
+                        <label for="manage_paiban2" onclick="goContentPage(this, 'schedule/scheduleGather.html');"><b><i></i></b>排班统计</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="manage_paiban3" name="manage_paiban">
+                        <label for="manage_paiban3" id="overtime" onclick="goContentPage(this, 'schedule/overtime.html');"><b><i></i></b>加班审核</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="manage_paiban4" name="manage_paiban">
+                        <label for="manage_paiban4" onclick="goContentPage(this, 'schedule/nursingGroup.html');"><b><i></i></b>护士排序</label>
+                        <ul id="groupName2" class="level2">
+                        </ul>
+                    </li>
+                    <li>
+                        <input type="radio" id="manage_paiban5" name="manage_paiban">
+                        <label for="manage_paiban5" onclick="goContentPage(this, 'schedule/scheduleOptions.html');"><b><i></i></b>设置班次</label>
+                    </li>
+                </ul>
+            </div>
+            
+            <!--患者管理子分类-->
+            <div class="zmenu trans02 zmenu4" name="patient">
+                <ul class="zmenu_list">
+                    <li>
+                        <input type="radio" id="manage_patient1" name="manage_patient" checked>
+                        <label for="manage_patient1" onclick="goContentPage(this, 'patientAdmin/patientIntoHospital.html');"><b><i></i></b>录入患者</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="manage_patient2" name="manage_patient">
+                        <label for="manage_patient2" onclick="goContentPage(this, 'patientAdmin/patientOutHospital.html');"><b><i></i></b>办理出院</label>
+                    </li>
+                </ul>
+            </div>
+            
+            <!--科室权限管理子分类-->
+            <div class="zmenu trans02 zmenu5" name="auth">
+                <ul class="zmenu_list">
+                    <li>
+                        <input type="radio" id="depart_limits1" name="depart_limits" checked>
+                        <label for="depart_limits1" onclick="goContentPage(this, 'authority/authority.html');"><b><i></i></b>按照权限查看</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="depart_limits2" name="depart_limits">
+                        <label for="depart_limits2" onclick="goContentPage(this, 'authority/memberAuthority.html');"><b><i></i></b>按照成员查看</label>
+                    </li>
+                </ul>
+            </div>
+            
+            <!--院科公告子分类-->
+            <div class="zmenu trans02 zmenu6">
+                <ul class="zmenu_list">
+                    <li>
+                        <input type="radio" id="depart_placard1" name="depart_placard" checked>
+                        <label for="depart_placard1" onclick="goContentPage(this, 'depart_placard/creat_depart_placard.html');"><b><i></i></b>新建</label>
+                    </li>
+                </ul>
+            </div>
+            
+            <!--会务助手子分类-->
+            <div class="zmenu trans02 zmenu7">
+                <ul class="zmenu_list">
+                    <li>
+                        <input type="radio" id="meet1" name="meet" checked>
+                        <label for="meet1" onclick="goContentPage(this, 'meet/conference.html');"><b><i></i></b>关于会务助手</label>
+                    </li>
+                    <li>
+                        <label class="goMmeetuUrl"><b><i></i></b></label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="page_right">
+    	<div class="page_right2">
+            <div class="page_contain">
+            
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<input type="checkbox" id="add_group">
+<label for="add_group" hidden="hidden">&#10011;添加分组</label>
+<!--弹出层及内容-->
+<div id="addGroup" class="layer_black add_groups">
+    <div class="layer_con">
+        <div class="tit"><label for="add_group" class="close">&#10005;</label><span>添加分组</span></div>
+        <form class="form" name="groupForm">
+            <li>
+                <span>所属类型</span>
+                <div name="newType">
+                    <select name="groupType">
+                        <option value="DOCTOR">医生组</option>
+                        <option value="NURSE">护士组</option>
+                    </select>
+                </div>
+                <div name="editType" hidden="hidden" style="display:none;"><b></b></div>
+            </li>
+            <li>
+                <span>分组名称</span>
+                <div>
+                    <input type="hidden" name="groupId" value="">
+                    <input type="text" id="groupName" name="groupName" placeholder="请填写分组名称">
+                </div>
+            </li>
+        </form>
+        <div class="btns">
+            <label for="add_group" class="span">关闭</label>
+            <label for="add_group" class="b groupSave hide">保存</label>
+            <label for="add_group" class="b groupUpdate hide">保存</label>
+        </div>
+    </div>
+</div>
+<script src="../../publics/js/jQuery-2.1.4.min.js"></script>
+<!--HTML在线编辑器kindeditor4.1.10 -->
+<script charset="utf-8" src="../kindeditor/kindeditor-min.js"></script>
+<script charset="utf-8" src="../kindeditor/lang/zh_CN.js"></script>
+<script src="../custom/js/upfile/upfile.js"></script>
+<script src="../custom/js/home_sidebar.js"></script>
+<link href="../custom/css/home_screen.css" rel="stylesheet" rev="stylesheet">
+</body>
+</html>

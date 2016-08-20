@@ -1,0 +1,423 @@
+var React = require("react");
+var ScheduleStore = require("./ScheduleStore");
+var ReactRouter = require('react-router');
+var Link = ReactRouter.Link;
+var IndexLink = ReactRouter.IndexLink
+var List = require('./List.react');
+var MenuBar = require('../MenuBar.react');
+var Select2 = require("react-select2");
+
+function getStateFromStores() {
+    return {};
+}
+var wlanip = "https://120.76.168.214:6443";
+var SelectAttender = React.createClass({
+    everyAllMembers: [],
+    singleAllMembers: [],
+    singlePersonArr: [],
+    jsonDepartIds: [],
+    jsonAllKeShi: [],
+    jsonUserIds: [],
+    currentDepart:{},
+    getInitialState: function () {
+        var data = {}
+        if ($.isArray(this.props.selecteds))
+            data.selecteds = this.props.selecteds;
+        data.departListView = [];
+        data.singleListView = [];
+        data.everyListView = [];
+        return data;
+
+    },
+    componentDidMount: function () {
+        this.selectFirst();
+    },
+    componentWillUnmount: function () {
+    },
+    _onChange: function () {
+        this.setState(getStateFromStores());
+    },
+    //选择科室 全选按钮事件
+    allKeShiChk: function (event) {
+        var $aksc = event.target;
+        var akscked = event.target.checked;
+        var departLis = $('#departList').children().children();
+        var self = this;
+        departLis.each(function (i) {
+            if (akscked) {
+                $('#departList label.cks').children('input[type="checkbox"]').prop('checked', true);
+                $('#departList label').children('div').children('i').children('font[className="change"]').text('已选中');
+                self.everyAllMembers.push($('#departList label.cks').attr('role'));
+            } else {
+                $('#departList label.cks').children('input[type="checkbox"]').prop('checked', false);
+                $('#departList label').children('div').children('i').children('font[className="change"]').text('有');
+                self.everyAllMembers.pop();
+            }
+        });
+        //singlePerson
+    },
+    cksBox: function (event) {
+        var $oCkbox = event.target;
+        var cked = $oCkbox.checked;
+        var depart_id = $($oCkbox).parent().attr('role');
+        var self = this;
+        if (cked) {
+            $($oCkbox).parent().next().prop('for', '');
+            $($oCkbox).parent().next().children().next().children().next().children('font[class="change"]').text('已选中');
+            self.everyAllMembers.push(depart_id);
+        } else {
+            $($oCkbox).parent().next().prop('for', 'form_part2');
+            $($oCkbox).parent().next().children().next().children().next().children('font[class="change"]').text('有');
+            if (self.everyAllMembers.length > 0) {
+                for (var i = 0; i < self.everyAllMembers.length; i++) {
+                    if (self.everyAllMembers[i] == depart_id) {
+                        self.everyAllMembers.splice([i], 1);
+                    }
+                }
+            }
+        }
+    },
+    singlePersonInputClick: function (event) {
+        var self = this;
+        var ckbox = event.target;
+        var ckboxRole = $(ckbox).attr('role');
+        if (ckbox.checked) {
+            self.singlePersonArr.push(ckboxRole);
+        } else {
+            if (self.singlePersonArr.length > 0) {
+                for (var i = 0; i < this.singlePersonArr.length; i++) {
+                    if (self.singlePersonArr[i] == ckboxRole) {
+                        self.singlePersonArr.splice([i], 1);
+                    }
+                }
+            }
+        }
+        self.singleAllMembers[1] = self.singlePersonArr;
+    },
+//part2确定按钮事件
+    ok2Btn: function () {
+        var self = this;
+        var input_keshiName = $('[name="keshiName"]');
+        for (var i in input_keshiName) {
+            self.jsonDepartIds[$(input_keshiName[i]).value] = $(input_keshiName[i]).checked
+        }
+        var tos = [];
+        for (var depaertId in self.jsonDepartIds) {
+            if (self.jsonDepartIds[depaertId])
+                tos.push(depaertId);
+        }
+
+
+        var input_allKeShi = $('.allKeShi');
+        for (var i in input_allKeShi) {
+            self.jsonDepartIds[input_allKeShi[i].value] = input_allKeShi[i].checked
+        }
+        for (var allKeShiId in self.jsonAllKeShi) {
+            if (self.jsonAllKeShi[allKeShiId])
+                tos.push(allKeShiId);
+        }
+
+
+        var input_person = $('[name="person"]');
+        for (var i in input_person) {
+            self.jsonUserIds[input_person[i].value] = input_person[i].checked
+        }
+        for (var id in self.jsonUserIds) {
+            if (self.jsonUserIds[id])
+                tos.push(id);
+        }
+        //alert(tos);
+
+        var everyAllMember = everyAllMembers;
+        var result = [], hash = {};
+        for (var i = 0, elem; (elem = everyAllMember[i]) != null; i++) {
+            if (!hash[elem]) {
+                result.push(elem);
+                hash[elem] = true;
+            }
+        }
+
+        if (result.length > 0) {
+            $('.select_colleague_btn span.selected').html('已选择<b className="num">' + result.length + '</b>个科室的同事');
+        } else {
+            $('.select_colleague_btn span.selected').html('未选择同事');
+        }
+    },
+
+
+//单科室part3确定按钮事件
+    ok3BtnSingle: function () {
+        //console.log(self.singleAllMembers);
+        var self = this;
+        //var groupName = self.singleAllMembers[0][0];
+        //var groupNameLen = self.singleAllMembers[0].length;
+
+        var personName = self.singleAllMembers[1][0];
+        var personNameLen = self.singleAllMembers[1].length;
+
+        if (self.singleAllMembers[1].length > 0) {
+            $('.select_colleague_btn span.selected').html('已选择<b>' + personName + '</b>等<b className="num">' + personNameLen + '</b>位同事');
+        } else {
+            $('.select_colleague_btn span.selected').html('未选择同事');
+        }
+        //if (self.singleAllMembers[0].length > 0 && self.singleAllMembers[1].length > 0) {
+        //    $('.select_colleague_btn span.selected').html('已选择<b>' + groupName + '</b>等<b className="num">' + groupNameLen + '</b>个分组及<b>' + personName + '</b>等<b className="num">' + personNameLen + '</b>位同事');
+        //} else if (self.singleAllMembers[0].length > 0 && self.singleAllMembers[1].length == 0) {
+        //    $('.select_colleague_btn span.selected').html('已选择<b>' + groupName + '</b>等<b className="num">' + groupNameLen + '</b>个分组');
+        //} else if (self.singleAllMembers[0].length == 0 && self.singleAllMembers[1].length > 0) {
+        //    $('.select_colleague_btn span.selected').html('已选择<b>' + personName + '等<b className="num">' + personNameLen + '</b>位同事');
+        //} else {
+        //    $('.select_colleague_btn span.selected').html('未选择同事');
+        //}
+    },
+//每个科室的按钮事件
+    showEveryDepart: function (event) {
+        var departId = $(event.target).attr("role");
+        var departName = $(event.target).attr("data-name");
+        self.currentDepart.id=departId;
+        self.currentDepart.name=departName;
+
+        /*当点击之后.everyDepart的ID替换成.go_part3的role*/
+        $('.everyDepart').attr('id', departId);
+        $('.everyDepart .top_info span').text('选择<' + departName + '>接收的同事');
+
+        /******************************/
+        /*      获取选择多科室同事
+         /******************************/
+        getData(wlanip + '/rest/ios/doctors/v1/' + departId + '/0', function (data) {
+                if (data.responseMsg == '1') {
+                    if (departId) {
+                        var users = data.users;
+                        var tsUl = $(".everyDepart>.every_con>.colleagues>ul")
+                        tsUl.html('');
+                        //将多科室的同事列表循环出来
+                        var everyListView = [];
+                        for (var i in users) {
+                            var b_toux = [];
+                            if (users[i].icon) {
+                                b_toux.push(<b className="toux"><i><img src={users[i].icon}/></i></b>);
+                            } else {
+                                if (users[i].name.length > 3) {
+                                    b_toux.push(<b className="toux"><i>{users[i].name.substring(3)}</i></b>);
+                                } else {
+                                    b_toux.push(<b className="toux"><i>{users[i].name}</i></b>);
+                                }
+                            }
+
+                            var tsId = users[i].id;
+                            var view = (<li role={tsId}>
+                                <label htmlFor={tsId}>
+                                    //当变量tsId和jsonUserIds[tsId]为true的时候，调用selectCheck函数
+                                    {self.selectCheck(tsId, jsonUserIds[tsId] == true)}
+                                    <span>{b_toux } {users[i].name}<b className="selects"><i></i></b></span>
+                                </label>
+                            </li>);
+                            everyListView.push(view);
+                        }
+                        self.setState({"everyListView": everyListView});
+                    }
+                } else {
+                    alert('失败');
+                }
+            }, function (xhr, errorText, errorType) {
+                alert('获取选择多科室同事的status是' + xhr.status + '，' + 'statusText是' + xhr.statusText);
+            }
+        );
+    },
+    selectCheck: function (tsId, flag) {
+        if (flag)
+            return (<input type="checkbox" name="person" id={tsId} value={tsId } defaultChecked/>)
+        return (<input type="checkbox" name="person" id={tsId} value={tsId}/>);
+    },
+
+
+    ok3BtnEvery: function (event) {
+        var depart_id = event.target.parent().parent().attr('id');
+        var ckbox = $('.select_con.every_con input[type="checkbox"]').is(':checked');
+        var m = 0;
+        if (ckbox) {
+            //everyAllMembers[m] = depart_id;
+            //m++
+            everyAllMembers.push(depart_id);
+        } else {
+            if (everyAllMembers.length > 0) {
+                for (var i = 0; i < everyAllMembers.length; i++) {
+                    if (everyAllMembers[i] == depart_id) {
+                        everyAllMembers.splice([i], 1);
+                    }
+                }
+            }
+        }
+    },
+
+    onCommit: function () {
+        if ($.isFunction(this.props.commit)) {
+            this.props.commit();
+        }
+    },
+
+    /******************************/
+    /*      获取选择单科室同事
+     /******************************/
+    selectFirst: function () {
+        var self = this;
+        getData(wlanip + "/rest/pc/doctors/" + ScheduleStore.getUser().id, {}, function (data) {
+                if (data.responseMsg == '1') {
+                    var users = data.users;
+                    var type = data.type;
+                    var departs = data.departs;
+
+                    //如果是单科室
+                    if (type == 1) {
+
+                        //form_part2科室列表为隐藏
+                        $('.form_part2').addClass('display_none');
+                        //form_part3同事列表的for变为返回form_part1
+                        $('.form_part3 .top_info label').prop('for', 'form_part1');
+                        //form_part3多科室的同事列表为隐藏
+                        $('.form_part3.everyDepart').addClass('display_none');
+                        //form_part3单科室的同事列表为显现
+                        $('.form_part3.singleDepart').removeClass('display_none');
+                        var singleListView = [];
+                        //将单科室的同事列表循环出来
+                        for (var i in users) {
+                            var b_toux = [];
+                            if (users[i].icon) {
+                                b_toux.push((
+                                    <b className="toux" style={{display:"inline"}}><i><img style={{display:"inline"}}
+                                                                                           src={ users[i].icon }/></i></b>));
+                            } else {
+                                if (users[i].name.length > 3) {
+                                    b_toux.push((<b className="toux" style={{display:"inline"}}><i
+                                        style={{display:"inline"}}>{ users[i].name.substring(3) }</i></b>));
+                                } else {
+                                    b_toux.push((<b className="toux" style={{display:"inline"}}><i
+                                        style={{display:"inline"}}>{ users[i].name }</i></b>));
+                                }
+                            }
+                            singleListView.push((<li>
+                                <label forHtml={ users[i].id }>
+                                    <input data-single="singlePerson" type="checkbox"
+                                           name="person" id={users[i].id} value={ users[i].id}
+                                           role={ users[i].name} style={{display:"inline"}}
+                                           onClick={self.singlePersonInputClick}/>
+                                    <span style={{display:"inline"}}>{b_toux} {users[i].name}<b className="selects"><i></i></b></span>
+                                </label>
+                            </li>));
+                        }
+
+                        self.singleAllMembers[1] = self.singlePersonArr;
+                        self.setState({"singleListView": singleListView});
+
+                        //如果是多科室
+                    } else {
+                        //form_part2科室列表为显示
+                        $('.form_part2').removeClass('display_none');
+                        //form_part3同事列表的for变为返回form_part2
+                        $('.form_part3 .top_info label').prop('for', 'form_part2');
+                        //form_part3多科室的同事列表为显现
+                        $('.form_part3.everyDepart').removeClass('display_none');
+                        //form_part3单科室的同事列表为隐藏
+                        $('.form_part3.singleDepart').addClass('display_none');
+
+                        //循环
+                        var departListView = [];
+                        for (var i = 0; i < departs.length; i++) {
+                            departListView.push((<li>
+                                <label className="cks" role={departs[i].id}>
+                                    <input onClick={this.cksBox} type="checkbox" name="keshiName"
+                                           value={"ALL_" + departs[i].id}/>
+                                    <b className="selects"><i></i></b></label>
+                                <label onClick={this.showEveryDepart} className="go_part3" htmlFor="form_part2"
+                                       role={departs[i].id} data-name={departs[i].name}>
+                                    <b className="jiantou">&#62;</b>
+                                    <div className="depart_info">
+                                        <span> {departs[i].name }</span>
+                                        <i> {"有" + departs[i].number + "个同事" }</i>
+                                    </div>
+                                </label>
+                            </li>));
+                        }
+                        self.setState({"departListView": departListView});
+                    }
+
+                } else {
+                    alert('失败');
+                }
+            }, function (xhr, errorText, errorType) {
+                alert('获取选择单科室同事的status是' + xhr.status + '，' + 'statusText是' + xhr.statusText);
+            }
+        );
+    },
+    render: function () {
+
+        return (
+            <div className="creat_con">
+                <div className="creat_form">
+                    <div className="f_p form_part2">
+                        <div className="top_info">
+                            <label className="back" htmlFor="form_part1">&#9665;</label>
+                            <label onClick={this.ok2Btn} className="ok" htmlFor="form_part1">确定</label>
+                            <span>选择科室</span>
+                        </div>
+
+                        <div className="checkall">
+                            <label>
+                                <input onClick={this.allKeShiChk} type="checkbox" className="allKeShi" value="ALL"/>
+                                <span className="checkallBtn">
+                                    <b className="selects"><i></i></b>全选</span></label>
+                        </div>
+
+                        <div className="departs" id="departList">
+                            <ul>
+                                {this.state.departListView}
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div className="f_p form_part3 singleDepart">
+                        <div className="top_info">
+                            <label onClick={this.form_part3_back} className="back" htmlFor="form_part2">&#9665;</label>
+                            <label onClick={this.ok3BtnSingle} className="ok" htmlFor="form_part1">确定</label>
+                            <span>选择接收的同事</span>
+                        </div>
+
+                        <input type="radio" id="select_singleTs" name="select_tg" defaultChecked/>
+                        <div className="select_con single_con trans02" style={{left:"0px",width:"100%"}}>
+                            <div className="select_con2 colleagues" style={{width:"100%"}}>
+                                <ul>
+                                    {
+                                        this.state.singleListView
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="f_p form_part3 everyDepart">
+                        <div className="top_info">
+                            <label className="back" htmlFor="form_part2">&#9665;</label>
+                            <label onClick={this.ok3BtnEvery} className="ok" htmlFor="form_part1">确定</label>
+                            <span>选择接收的同事</span>
+                        </div>
+                        <input type="radio" id="select_everyTs" name="select_tgs"/>
+                        <input type="radio" id="select_everyGroup" name="select_tgs" defaultChecked/>
+                        <div className="select_con every_con trans02" style={{left:"0px",width:"100%"}}>
+                            <div className="select_con2 colleagues" style={{width:"100%"}}>
+                                <ul>
+                                </ul>
+                            </div>
+
+                            <div className="select_con2 collGroup">
+                                <ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+});
+module.exports = SelectAttender;

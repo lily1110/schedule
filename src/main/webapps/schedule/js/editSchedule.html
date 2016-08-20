@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<meta charset="utf-8">
+<title role="schedule/editSchedule.html">编辑排班</title>
+<script src="../custom/js/newPaibanb.js"></script>
+<script src="../custom/js/newPaibanTab.js"></script>
+</head>
+<body>
+<div class="page_blank" role="editSchedule.html"></div>
+
+<div class="pages_tops">
+	<div class="tops links">
+    	
+    	<label class="link" id="returnNrusing">返回</label>  
+        
+        
+        <!--**********添加编外护士**********-->
+    	<input type="checkbox" id="add_PWnurse">
+    	<label for="add_PWnurse" class="link" id="editAddPw">&#10010;添加编外护士</label>
+        <!--弹出层及内容-->
+        <div class="layer_black">
+            <div class="layer_con">
+                <div class="tit"><label for="add_PWnurse" class="close">&#10005;</label><span>添加编外护士</span></div>
+                <form name="memberForm">
+                    <ul class="form" id="pwDiv">
+                        <li>
+                            <span><a href="javascript:;" id="addPWmember">[+]</a>姓名</span>
+                            <div><input type="text" name="name" placeholder="请填写姓名"></div>
+                        </li>
+                    </ul>
+                    <ul class="form">
+                    	<li><div id="addFooter">注释:点击[+]，新增一行</div></li>
+                    </ul>
+                </form>
+                <div class="btns">
+                    <label for="add_PWnurse" class="span" id="addPwai">添加</label>
+                    <label for="add_PWnurse" class="b">关闭</label>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!--**********删除编外护士**********-->
+    	<input type="checkbox" id="del_PWnurse">
+    	<label for="del_PWnurse" class="link" id="editDeletePw">&#10008;删除编外护士</label>
+        <!--弹出层及内容-->
+        <div class="layer_black">
+            <div class="layer_con">
+                <div class="tit"><label for="del_PWnurse" class="close">&#10005;</label><span>删除编外护士</span></div>
+                <div class="tab_area1">
+                	<div class="tab_area2">
+                        <div class="tab_box">
+                            <table cellpadding="0" cellspacing="0" id="deletePWmember">
+                                <tbody>
+                                    <tr><th>姓名</th><th>选择</th></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="btns">
+                    <label class="span" for="del_PWnurse" id="deletePwai">删除</label>
+                    <label class="b" for="del_PWnurse">关闭</label>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!--**********沿用上周排班**********-->
+    	<label class="link" id="copyLastWeek">&#9754;沿用上周排班</label>
+        
+        <!--**********打印**********-->
+        <input type="checkbox" id="copy_Print">
+    	<label for="copy_Print" class="link" id="setPrintScheudle">打印</label>
+        <!--弹出层及内容-->
+        <div class="layer_black">
+            <div class="layer_con">
+                <div class="tit"><label for="copy_Print" class="close">&#10005;</label><span>打印设置-勾选打印范围</span></div>
+                <form name="memberForm">
+                    <ul class="form">
+                        <li>
+                        	<span><a href="javascript:;" id="allcheckbox">全选</a></span>
+                            <div><a href="javascript:;" id="noallcheckbox">全不选</a></div>
+                        </li>
+                        <li>
+                            <div id="setcheckbox">
+                            	<label><input type="checkbox"><b class="check">分組</b></label><br>
+                                <label><input type="checkbox"><b class="check">姓名</b></label><br>
+                                <label><input type="checkbox"><b class="check">级别</b></label><br>
+                                <label><input type="checkbox"><b class="check">排班</b></label><br>
+                                <label><input type="checkbox"><b class="check">周标准工时</b></label><br>
+                                <label><input type="checkbox"><b class="check">本周工时</b></label><br>
+                                <label><input type="checkbox"><b class="check">历史差时</b></label><br>
+                                <label><input type="checkbox"><b class="check">加班</b></label><br>
+                                <label><input type="checkbox"><b class="check">累计差时</b></label>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+                <div class="btns">
+                    <label for="copy_Print" class="span" id="printSchedule">打印</label>
+                    <label for="copy_Print" class="b">关闭</label>
+                </div>
+            </div>
+        </div>
+
+        <label class="btn" id="saveSchedule">存草稿</label>
+        <label class="btn" id="releaseSch">发布</label>
+        
+        <label class="btn downLoadPbb">下载排班表</label>
+    </div>
+    
+    <div class="clear"></div>
+</div>
+
+<div class="pages_tops">
+	<div class="tops texts">
+    	<b class="text">周次：<span id="paibanWeek"></span>&nbsp;&nbsp;周标准工时：<span id="biaoZhgs"><input type="text" height="28" value=""></span>小时</b>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="tab_box">
+	<table id="weekpaiban" cellpadding="0" cellspacing="0">
+    	<tbody>
+            <tr><th>分组</th><th>姓名</th><th>级别</th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th>本周工时</th><th>历史差时</th><th>加班</th><th>累计差时</th></tr>
+        </tbody>
+    </table>
+    <div class="tab_infos"></div>
+</div>
+<div class="tab_box tab_bz">
+	<table cellpadding="0" cellspacing="0">
+        <tbody>
+        	<tr>
+            	<td>备注</td>
+                <td><textarea placeholder="请填写备注……"></textarea></td>
+                <td>* 绿色代表期望排班</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
