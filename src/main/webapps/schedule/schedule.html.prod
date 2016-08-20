@@ -39,9 +39,15 @@
 <body  class="hold-transition skin-blue sidebar-mini">
 
 <div id="body"></div>
+<iframe style="position:absolute;top:-9999px" /></iframe>
 
 <!-- jQuery 2.2.3 -->
 <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+
+<script src="../assets/js/jquery.ui.widget.js"></script>
+<script src="../assets/js/jquery.iframe-transport.js"></script>
+<script src="../assets/js/jquery.fileupload.js"></script>
+
 <!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
