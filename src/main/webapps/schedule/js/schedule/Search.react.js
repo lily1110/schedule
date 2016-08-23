@@ -12,7 +12,11 @@ function getStateFromStores() {
 var Search = React.createClass({
     getInitialState: function () {
         var data = getStateFromStores();
-        data.filter = "mine";
+
+        if(this.props.params.filter=="mine") {
+            data.filter = "mine";
+        }
+
         return data;
     },
     componentDidMount: function () {
@@ -35,19 +39,24 @@ var Search = React.createClass({
         var params = {
             content:this.state.tmpKey
         }
+
         ScheduleStore.searchList(params);
     },
-    mineFilter: function () {
-        alert("mine");
+    mineFilter: function (event) {
         this.setState({filter: "mine"});
+        this.clickTab(event);
     },
     byMeFilter: function () {
-        alert("byMe");
         this.setState({filter: "byMe"});
+        this.clickTab(event);
+    },
+    clickTab:function(event) {
+        $(".search div .tab").removeClass("select");
+        $(event.target).addClass("select");
     },
     render: function () {
         return (
-            <div className="col-md-12 col-sm-12 col-xs-12">
+            <div className="col-md-12 col-sm-12 col-xs-12 search">
 
                 <div className="row">
                     <div className="col-md-12 col-sm-12 col-xs-12">
@@ -58,10 +67,10 @@ var Search = React.createClass({
                         <a onClick={this.toSearch}>搜索</a>
                     </div>
                     <div className="col-md-3"></div>
-                    <div onClick={this.mineFilter} className="col-md-3 col-sm-6 col-xs-6">
+                    <div onClick={this.mineFilter} className="col-md-3 col-sm-6 col-xs-6 tab select">
                         收到的日程
                     </div>
-                    <div onClick={this.byMeFilter} className="col-md-3 col-sm-6 col-xs-6">
+                    <div onClick={this.byMeFilter} className="col-md-3 col-sm-6 col-xs-6 tab">
                         我安排的日程
                     </div>
                     <div className="col-md-3"></div>
