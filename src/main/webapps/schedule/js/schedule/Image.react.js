@@ -5,6 +5,8 @@ var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 var IndexLink = ReactRouter.IndexLink;
 var TypeStore = require("./TypeStore");
+var Btn = require("../public/Btn.react");
+
 var tokenUrl ="UPLOAD_AK_TOP MjMyNDg0OTE6ZXlKa1pYUmxZM1JOYVcxbElqb3hMQ0psZUhCcGNtRjBhVzl1SWpveE5EY3hNRGd3TVRjd05qTTJMQ0pwYm5ObGNuUlBibXg1SWpvd0xDSnVZVzFsSWpvaUpIdDVaV0Z5ZlMwa2UyMXZiblJvZlMwa2UyUmhlWDB0Skh0b2IzVnlmUzBrZTIxcGJuVjBaWDB0Skh0elpXTnZibVI5TFNSN1ptbHNaVk5wZW1WOUxpUjdaWGgwZlNJc0ltNWhiV1Z6Y0dGalpTSTZJbmhyYlNJc0luTnBlbVZNYVcxcGRDSTZNSDA6ODFhNWNkNGVlZGM5OTMzZTgxZTI0YjcwMzJlMzI4NzFmOTJiY2FiYg";
 var uploadUrl = "https://upload.media.aliyun.com/api/proxy/upload";
 var token={
@@ -14,17 +16,15 @@ var token={
 
 var Image = React.createClass({
     baifenbi1: 0,
-    addImg_urls: [],
     uploadedImgsView:[],
     imgListView:[],
-    imgList:[],
     getInitialState: function () {
         var data = {};
         return data;
     },
     componentWillMount:function() {
         if($.isArray(this.props.imgList)) {
-            this.imgList = this.props.imgList;
+            this.setState({"imgList": this.props.imgList})
         }
     },
     componentDidMount: function () {
@@ -82,17 +82,25 @@ var Image = React.createClass({
             },
             done: function (e, data) {
                 if(data.result.code=="OK") {
-                    self.pushImg(data.result.url);
-                    if($.isFunction(self.props.addImgs)) {
-                        self.props.addImgs(self.imgList);
+                    var l = self.pushImg(data.result.url);
+                    if($.isArray(self.state.imgList)&&self.state.imgList.length>6) {
+                        alert("最多上传六张图片");
+                        return;
                     }
+                    if($.isFunction(self.props.addImgs)) {
+                        self.props.addImgs(l);
+                    }
+                    self.setState({"imgList":l});
                 }
             }
         });
     },
     pushImg:function(url) {
-        this.imgList.push(url);
-        this.setState({"imgList":this.imgList});
+        var l = this.state.imgList;
+        l.push(url);
+        return l;
+    },
+    deleteImg: function(url) {
     },
     componentWillUnmount: function () {
     },
@@ -100,12 +108,12 @@ var Image = React.createClass({
         var html = [];
         var self = this;
         var isEdit = self.props.isEdit;
-        _.each( self.imgList, function(t){
+        _.each( self.state.imgList, function(t){
             html.push(
                 <dd>
-                    <i data-url={t}  onClick={self.delectitImg} className={"fa fa-times "+(isEdit?"":"hide")}
+                    <Btn tag = "i" obj={t}  click={self.delectitImg} css={"fa fa-times "+(isEdit?"":"hide")}
                        aria-hidden="true"
-                    ></i>
+                    ></Btn>
                     <img src={t} />
                 </dd>);
         })
@@ -114,21 +122,17 @@ var Image = React.createClass({
     /******************************/
     /*         删除图片
      /******************************/
-    delectitImg: function (event) {
+    delectitImg: function (obj) {
         if(this.props.isEdit) {
-            var self = this;
-            self.addImg_urls.pop();
-            var url = $(event.target).attr("data-url");
-            $(event.target).parent('dd').remove();
-            $('#up_img').prop('disabled', '');
-            $('label[for="up_img"][className="upload"]').css('opacity', '1');
+            var url = obj;
+            var l = _.filter(this.state.imgList,function(t){
+                return t!=url;
+            })
+            this.setState({"imgList":l});
         }
-
     },
 
     render: function () {
-        //<input onClick={this.addImgs} id="up_img" type="file" name="fileName" multiple="multiple"/>
-
         return (
             <div className="creat_con">
                 <form className="creat_form trans02">

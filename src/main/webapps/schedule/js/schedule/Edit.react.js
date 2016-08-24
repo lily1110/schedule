@@ -31,8 +31,7 @@ var Edit = React.createClass({
         var selectedType = "未分类";
         var content = "";
         var t = ScheduleStore.getCurrentDate();
-        t.setHours(t.getHours() + 1);
-        t.setMinutes(0);
+
         var timezone = "时区一";
         var remind = -1;
         var repeat = "不重复";
@@ -63,7 +62,9 @@ var Edit = React.createClass({
                 timezone = detail.timezone;
             }
             if (!isNullOrEmpty(detail.remind)) {
-                remind = parseInt((detail.time - detail.remind) / 60);
+                console.log(detail.time +" - "+ detail.remind+" ="+( detail.time - detail.remind));
+                remind = parseInt((detail.time - detail.remind) /(1000* 60));
+                console.log(remind);
             }
             if (!isNullOrEmpty(detail.repeat)) {
                 repeat = detail.repeat;
@@ -248,11 +249,15 @@ var Edit = React.createClass({
         return "";
     },
     remindHtml: function () {
-        return (<Select2
-            defaultValue={this.state.remind}
-            data={this.state.reminds}
-            onChange={this.remindChange}
-        />);
+        if(this.state.reminds.length>0) {
+            return (<Select2
+                defaultValue={this.state.remind}
+                data={this.state.reminds}
+                onChange={this.remindChange}
+            />);
+        }
+        return "";
+
     },
     repeatHtml: function () {
         if (this.state.repeats.length > 0)

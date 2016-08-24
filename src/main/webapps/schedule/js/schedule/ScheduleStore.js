@@ -43,11 +43,18 @@ var ScheduleStore = assign({}, EventEmitter.prototype, {
     getCurrentDate: function() {
         if(currentDate==null) {
             currentDate = new Date();
+            var now = new Date();
+            currentDate.setHours(now.getHours()+1);
+            currentDate.setMinutes(0);
         }
         return currentDate;
     },
     setCurrentDate:function(_date) {
-        currentDate=_date;
+        var date = _date;
+        var now = new Date();
+        date.setHours(now.getHours()+1);
+        date.setMinutes(0);
+        currentDate = date;
     },
     getSchedulePatients : function() {
         if(!$.isEmptyObject(detail)&&$.isArray(detail.patients))
