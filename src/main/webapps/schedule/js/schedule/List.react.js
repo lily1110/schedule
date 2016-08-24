@@ -117,10 +117,7 @@ var List = React.createClass({
         });
         //$("#eventsList").html(_html)
         //<div><input onChange={this.searchInputChange} placeholder="搜索条件"/>   <a onClick={this.searchSchedules}>  搜索 </a> </div>
-        var menuHtml=[];
-        if(this.props.showMenu) {
-            menuHtml.push((<MenuBar moreLink={"/search"} more={"搜索"} />))
-        }
+
         var exportHtml=[];
         if(this.props.export) {
             exportHtml.push((<Link to="/export"><div className="exportBtn">导出</div></Link>));
@@ -131,7 +128,6 @@ var List = React.createClass({
         }
         return(
             <div className='col-md-12 col-xs-12 col-sm-12' style={{marginTop:'20px'}}>
-                {menuHtml}
                 <div>{exportHtml}</div>
                 <div>{this.typeHtml()}</div>
                 <div>{otherHtml}</div>

@@ -46,19 +46,6 @@ var Export = React.createClass({
         this.setState({type: event.target.value});
     },
     typeHtml: function() {
-        //var self = this;
-        //var html=[];
-        //var items=[];
-        //var types = ["全部日程"];
-        //types = types.concat(this.state.types);
-        //_.each(types,function(t){
-        //    items.push((<option>{t}</option>));
-        //});
-        //html.push(
-        //    <select className="form-control select2" id="filter-type">
-        //        {items}
-        //    </select>);
-        //return html;
         var types = this.state.types;
         if($.isArray(types)&&!_.contains(types,"全部日程")) {
             var t = ["全部日程"];
@@ -72,20 +59,17 @@ var Export = React.createClass({
     },
     export: function() {
         var userId = ScheduleStore.getUser().id;
-        var type = this.state.type;
+        var type = this.state.type=="全部日程"?"ALL":this.state.type;
         var startDesc = $("#start-date").val();
         var endDesc = $("#end-date").val();
-        var start = new Date(startDesc).getTime();
-        var end = new Date(endDesc).getTime();
-        if(end<=start) {
+        if(endDesc<startDesc) {
             alert("请选择合法时间段");
             return;
         }
-        window.open(host+"/rest/schedule/download/v1/"+userId+"/"+type+"/"+start+"/"+end);
-        ///rest/schedule/download/v1/{id}/{type}/{start}/{end}
-        //getData(host+"/rest/schedule/download/v1/"+userId+"/"+type+"/"+start+"/"+end,{},function(data){
-        //    alert("导出成功");
-        //},function(v1,v2,v3){})
+        var ps = new Date(startDesc).format("yyyyMMdd");
+        var pe = new Date(endDesc).format("yyyyMMdd");
+        var re = host+"/rest/schedule/download/v1/"+userId+"/"+type+"/"+ps+"/"+pe;
+        window.open(re);
     },
     render:function() {
 
