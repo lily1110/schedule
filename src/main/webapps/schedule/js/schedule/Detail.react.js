@@ -78,6 +78,12 @@ var Calendar = React.createClass({
         ScheduleStore.finishSchedule(params);
 
     },
+    cancelFinish:function() {
+        if(!confirm("确定重新开始该日程?")||isNullOrEmpty(this.state.detail.id)) {
+            return
+        }
+        
+    },
 
     getHtml: function () {
         var obj = this.state.detail;
@@ -164,7 +170,13 @@ var Calendar = React.createClass({
                         </div>
                         <div className="row">
                             <div className="col-md-12">
+                            {
+                                obj.status==1?(
+                                    <div onClick={this.cancelFinish} className="create_btn to_create" style={{marginTop: '30px'}}>取消完成</div>
+                                    ):(
                                 <div onClick={this.finishSchedule} className="create_btn to_create" style={{marginTop: '30px'}}>确认完成</div>
+                                    )
+                            }
                                 <div className="create_btn to_create" style={{marginTop: '30px'}} onClick={this.toEdit}>修改
                                 </div>
                                 <div onClick={this.deleteSchedule} className="create_btn to_create" style={{marginTop: '30px'}}>删除</div>

@@ -138,15 +138,18 @@ var Edit = React.createClass({
         this.initStyle();
     },
     initStyle: function () {
+        var self = this;
         $('#schedule-date').datepicker({
             autoclose: true,
             startDate: new Date(),
             format: "yyyy-mm-dd",
+            onClose: self.setDateDesc,
         });
         $(".timepicker").timepicker({
             showInputs: false,
             showMeridian: false,
             minuteStep: 5,
+            onClose: self.setTimeDesc,
         });
     },
     componentDidUpdate: function () {
@@ -158,8 +161,19 @@ var Edit = React.createClass({
         console.log("will unmount");
 
     },
+    componentWillUpdate(nextProps, nextState) {
+    },
     _onChange: function () {
         this.setState(getStateFromStores());
+    },
+    setDateDesc:function(event) {
+        console.log(event.target.value);
+        this.setState({dateDesc:event.target.value});
+    },
+    setTimeDesc:function(event) {
+        console.log(event.target.value);
+
+        this.setState({timeDesc:event.target.value});
     },
     save: function () {
         var params = {};
@@ -179,7 +193,9 @@ var Edit = React.createClass({
             alert("时间不能为空");
             return;
         }
-        timeDesc += $("#schedule-date").val() + " " + $("#schedule-time").val() + ":00";
+        timeDesc += this.state.dateDesc+ " " + this.state.timeDesc + ":00";
+        console.log(timeDesc);
+
         time = new Date(timeDesc).getTime();
         if (time < new Date().getTime()) {
             alert("不能小于当前时间");
@@ -201,6 +217,9 @@ var Edit = React.createClass({
         }
         var workmates = this.state.workmates;
         if (!$.isArray(workmates) || workmates.length == 0) {
+            workmates = _.filter(workmates,function(w) {
+                return !_.isNull(w);
+            });
             if (confirm("设置为自己的日程")) {
                 workmates.push(this.state.user.id);
             } else {
@@ -296,17 +315,13 @@ var Edit = React.createClass({
         var self = this;
         var workmatesDesc = "已选择";
         var dcount = 0;
+        var wcount = 0;
         _.each(this.state.workmates, function (t) {
-            if (t != null && t.id != null && t.id.indexOf("ALL")) {
-                dcount++;
-            } else if (t.indexOf("ALL") >= 0) {
-                dcount++;
+            if(!isNullOrEmpty(t)) {
+                wcount++;
             }
         });
-        var wcount = this.state.workmates.length - dcount;
-        if (dcount > 0) {
-            workmatesDesc += dcount + "个部门 "
-        }
+
         if (wcount > 0) {
             workmatesDesc += wcount + "个同事"
 
@@ -340,8 +355,10 @@ var Edit = React.createClass({
                                         <div className="input-group-addon">
                                             <i className="fa fa-calendar"></i>
                                         </div>
-                                        <input id="schedule-date" type="text" className="form-control pull-right"
-                                               defaultValue={this.state.dateDesc}/>
+                                        <input onInput={this.setDateDesc} id="schedule-date" type="text" className="form-control pull-right"
+                                               defaultValue={this.state.dateDesc} onChange={function() {
+                                                alert("schedule-date is changed");
+                                               }}/>
                                     </div>
                                     <div className="bootstrap-timepicker" style={{marginTop: '10px'}}>
                                         <div className="form-group">
@@ -349,7 +366,7 @@ var Edit = React.createClass({
                                                 <div className="input-group-addon">
                                                     <i className="fa fa-clock-o" style={{fontSize: '18px'}}></i>
                                                 </div>
-                                                <input id="schedule-time" type="text"
+                                                <input onInput={this.setTimeDesc} id="schedule-time" type="text"
                                                        className="form-control timepicker"
                                                        defaultValue={this.state.timeDesc}/>
                                             </div>

@@ -77,7 +77,6 @@ var Type = React.createClass({
                 </div>
             </div>
         );
-
     },
 });
 
