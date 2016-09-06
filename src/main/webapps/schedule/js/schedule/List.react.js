@@ -24,11 +24,10 @@ var List = React.createClass({
         ScheduleStore.addChangeListener(this._onChange);
         TypeStore.addChangeListener(this._onChange);
         TypeStore.queryType();
-        //todo handle filters
+
         var self = this;
         $("#filter-type").change(function(){
             var checkText=$("#filter-type").find("option:selected").text();
-            //alert("aa"+checkText);
             self.filterByType(checkText);
         });
         $(".select2").select2(
@@ -40,7 +39,6 @@ var List = React.createClass({
         );
         this.query.key = this.props.key;
         ScheduleStore.queryMyToDo();
-
     },
     componentWillUnmount: function () {
         PageStores.removeChangeListener(this._onChange);

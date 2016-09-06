@@ -43,7 +43,7 @@ var Schedule = React.createClass({
                                     </span>
                                 </Link>
                                 <ul className="treeview-menu">
-                                    <li><Link to="/list/todo"><i className="fa fa-circle-o"></i> 我参与的日程</Link></li>
+                                    <li><Link to="/mine"><i className="fa fa-circle-o"></i> 我参与的日程</Link></li>
                                     <li><Link to="/list/todo"><i className="fa fa-circle-o"></i> 我安排的日称</Link></li>
                                 </ul>
                             </li>

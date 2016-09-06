@@ -10,6 +10,7 @@ var Calendar = require('./calendar/Calendar.react');
 var Detail = require('./schedule/Detail.react');
 var Edit = require('./schedule/Edit.react');
 var List = require('./schedule/List.react');
+var MySchedule = require('./schedule/MySchedule.react');
 var All = require('./schedule/All.react');
 var Search = require('./schedule/Search.react');
 var Export = require('./schedule/Export.react');
@@ -28,6 +29,7 @@ var routes = (
             <Route path="detail/:id" component={Detail} />
             <Route path="edit(/:id)" component={Edit} />
             <Route path="list/:tag" component={List} />
+            <Route path="mine" component={MySchedule} />
             <Route path="all" component={All} />
             <Route path="search" component={Search} />
             <Route path="export" component={Export} />
