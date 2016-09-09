@@ -36,7 +36,7 @@ var Other = React.createClass({
     },
     filterByType: function (t) {
         this.query.type = t;
-        ScheduleStore.queryList(this.query);
+        ScheduleStore.queryMyOthers(this.query);
     },
     typeHtml: function () {
         var self = this;

@@ -62,8 +62,9 @@ var Edit = React.createClass({
                 timezone = detail.timezone;
             }
             if (!isNullOrEmpty(detail.remind)) {
-                console.log(detail.time +" - "+ detail.remind+" ="+( detail.time - detail.remind));
-                remind = parseInt((detail.time - detail.remind) /(1000* 60));
+                //console.log(detail.time +" - "+ detail.remind+" ="+( detail.time - detail.remind));
+                //remind = parseInt((detail.time - detail.remind) /(1000* 60));
+                remind = detail.remind;
                 console.log(remind);
             }
             if (!isNullOrEmpty(detail.repeat)) {

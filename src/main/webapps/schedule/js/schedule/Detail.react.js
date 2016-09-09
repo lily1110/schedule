@@ -108,39 +108,41 @@ var Calendar = React.createClass({
         if (obj.remind <= 0) {
             remindDesc = "不提醒";
         } else {
-            var d = parseInt((obj.time - obj.remind) / (1000 * 60));
-            switch (d) {
+            //var d = parseInt((obj.time - obj.remind) / (1000 * 60));
+            switch (obj.remind) {
                 case 0:
                     remindDesc = "事件发生时";
                     break;
-                case 5:
+                case 1:
                     remindDesc = "提前5分钟";
                     break;
-                case 15:
-                    remindDesc = "提前15分钟";
+                case 2:
+                    remindDesc = "提前10分钟";
                     break;
-                case 30:
+                case 4:
                     remindDesc = "提前30分钟";
                     break;
-                case 60:
+                case 8:
                     remindDesc = "提前1小时";
                     break;
-                case 120:
+                case 16:
                     remindDesc = "提前2小时";
                     break;
-                case 300:
+                case 32:
                     remindDesc = "提前5小时";
                     break;
-                case 1440:
+                case 64:
                     remindDesc = "提前1天";
                     break;
-                case 2880:
+                case 128:
                     remindDesc = "提前2天";
                     break;
-                case 10080:
+                case 256:
+                    remindDesc = "提前3天";
+                    break;
+                case 512:
                     remindDesc = "提前一周";
                     break;
-
             }
         }
 

@@ -2,6 +2,7 @@ var DingDongDispatcher = require('../dispatcher/DingDongDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
+var Const = require('../public/Const');
 
 var detail={};
 var list;
@@ -21,7 +22,7 @@ var user={"id":"Doctor_72010",
         "imid": "72010"};
 
 var types=[];
-var host =  "https://120.76.168.214:6443";
+var host =  Const.host;
 var currentDate;
 
 var ScheduleStore = assign({}, EventEmitter.prototype, {
@@ -116,9 +117,9 @@ var ScheduleStore = assign({}, EventEmitter.prototype, {
         },function(v1,v2,v3){});
     },
     //  获取我帮别人创建的人员列表
-    queryMyOthers:function() {
+    queryMyOthers:function(query) {
         //getData("../api/events.json",{},function(data){
-        getData(host+"/rest/schedule/other/v1/"+user.id,{},function(data){
+        getData(host+"/rest/schedule/mine/other/v1/"+user.id,{},function(data){
             list = data.data;
             ScheduleStore.emitChange();
         },function(v1,v2,v3){});

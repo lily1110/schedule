@@ -75,7 +75,7 @@ var All = React.createClass({
                     </div>
                 </div>
                 <div className="row">
-                    <List filter={"mine"} showType={true} export={true}></List>
+                    <List params={{"tag":"mine"}} showType={true} export={true}></List>
                 </div>
             </div>
         );

@@ -38,6 +38,7 @@ var List = React.createClass({
             }
         );
         this.query.key = this.props.key;
+        var tag = this.props.params.tag;
         ScheduleStore.queryMyToDo();
     },
     componentWillUnmount: function () {
@@ -73,6 +74,9 @@ var List = React.createClass({
 
     render:function() {
         var list = this.state.list;
+        if($.isArray(this.props.list)) {
+
+        }
         //$(".content-wrapper").css("display","none");
         //$("#events").css("display","block");
         var _html = [];
