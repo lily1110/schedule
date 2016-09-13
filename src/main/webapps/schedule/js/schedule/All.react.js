@@ -5,7 +5,7 @@ var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 var IndexLink = ReactRouter.IndexLink;
 var TypeStore = require("./TypeStore");
-var List = require("./List.react");
+var ScheduleList = require("./ScheduleList.react");
 var MenuBar = require("../MenuBar.react");
 
 function getStateFromStores() {
@@ -75,7 +75,7 @@ var All = React.createClass({
                     </div>
                 </div>
                 <div className="row">
-                    <List params={{"tag":"mine"}} showType={true} export={true}></List>
+                    <ScheduleList params={{"tag":"mine"}} showType={true} export={true}></ScheduleList>
                 </div>
             </div>
         );

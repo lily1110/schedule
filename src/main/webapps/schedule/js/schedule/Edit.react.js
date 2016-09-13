@@ -162,8 +162,6 @@ var Edit = React.createClass({
         console.log("will unmount");
 
     },
-    componentWillUpdate(nextProps, nextState) {
-    },
     _onChange: function () {
         this.setState(getStateFromStores());
     },
@@ -232,7 +230,7 @@ var Edit = React.createClass({
             params.imgs=this.imgs;
         }
         params.type = this.state.selectedType;
-        params.location = this.state.location;
+        //params.location = this.state.location;
         params.workmates = workmates;
         params.patients = this.state.patients;
         if (this.props.isUpdate) {

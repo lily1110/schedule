@@ -10,6 +10,7 @@ var Calendar = require('./calendar/Calendar.react');
 var Detail = require('./schedule/Detail.react');
 var Edit = require('./schedule/Edit.react');
 var List = require('./schedule/List.react');
+var ScheduleList = require('./schedule/ScheduleList.react');
 var MySchedule = require('./schedule/MySchedule.react');
 var All = require('./schedule/All.react');
 var Search = require('./schedule/Search.react');
@@ -28,7 +29,7 @@ var routes = (
             <IndexRoute component={Calendar} />
             <Route path="detail/:id" component={Detail} />
             <Route path="edit(/:id)" component={Edit} />
-            <Route path="list/:tag" component={List} />
+            <Route path="list/:tag" component={ScheduleList} />
             <Route path="mine" component={MySchedule} />
             <Route path="all" component={All} />
             <Route path="search" component={Search} />
@@ -36,7 +37,7 @@ var routes = (
             <Route path="workmates" component={WorkmatesList} />
             <Route path="schedule/patients/:scheduleId" component={PatientsList} />
             <Route path="patient/schedules/:patientId" component={List} />
-            <Route path="workmate/schedules/:workmateId" component={List} />
+            <Route path="workmate/schedules/:workmateId" component={ScheduleList} />
         </Route>
         <Route path="attender" component={SelectAttender} />
         <Route path="img" component={Image} />

@@ -18,8 +18,11 @@ var others=[];
 //var user={"id":"Doctor_71010",
 //        "imid": "71010"};
 var recents=[];
-var user={"id":"Doctor_72010",
-        "imid": "72010"};
+var id =  window.sessionStorage.getItem("id");
+var name = window.sessionStorage.getItem("name");
+var user={"id":window.sessionStorage.getItem("id"),
+        "imid": window.sessionStorage.getItem("imid"),
+        "name": window.sessionStorage.getItem("name")};
 
 var types=[];
 var host =  Const.host;
@@ -99,8 +102,10 @@ var ScheduleStore = assign({}, EventEmitter.prototype, {
         return remind;
     },
     getUser:function() {
+
         return user;
     },
+    queryUser:function() {},
     getTypes:function() {
         return types;
     },

@@ -3,7 +3,7 @@ var ScheduleStore = require("./ScheduleStore");
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
 var IndexLink = ReactRouter.IndexLink
-var List = require('./List.react');
+var ScheduleList = require('./ScheduleList.react');
 var MenuBar = require('../MenuBar.react');
 
 function getStateFromStores() {
@@ -12,11 +12,15 @@ function getStateFromStores() {
 var Search = React.createClass({
     getInitialState: function () {
         var data = getStateFromStores();
-
-        if(this.props.params.filter=="mine") {
-            data.filter = "mine";
+        var params={};
+        if(this.props.params.tag=="mine") {
+            params["tag"] = "mine";
+        } else {
+            params["tag"] = "mine";
         }
-
+        params["content"]="all";
+        params["tmpKey"]="";
+        data["params"] = params;
         return data;
     },
     componentDidMount: function () {
@@ -29,32 +33,33 @@ var Search = React.createClass({
     _onChange: function () {
         this.setState(getStateFromStores());
     },
-    searchInputChange: function (event) {
-        this.setState({filter: event.target.value});
-    },
     onKeyChange: function (event) {
         this.setState({tmpKey: event.target.value});
     },
     toSearch: function () {
-        var params = {
-            content:this.state.tmpKey
-        }
+        var params = this.state.params;
+        params["content"] = this.state.tmpKey;
 
         ScheduleStore.searchList(params);
     },
     mineFilter: function (event) {
-        this.setState({filter: "mine"});
+        var params = this.state.params;
+        params["tag"] = "mine";
         this.clickTab(event);
+        this.setState({params: params});
     },
-    byMeFilter: function () {
-        this.setState({filter: "byMe"});
+    byMeFilter: function (event) {
+        var params = this.state.params;
+        params["tag"] = "byMe";
         this.clickTab(event);
+        this.setState({params: params});
     },
     clickTab:function(event) {
         $(".search div .tab").removeClass("select");
         $(event.target).addClass("select");
     },
     render: function () {
+        //                    <List filter={this.state.filter} key={this.state.key} showType={false}></List>
         return (
             <div className="col-md-12 col-sm-12 col-xs-12 search">
 
@@ -74,7 +79,7 @@ var Search = React.createClass({
                         我安排的日程
                     </div>
                     <div className="col-md-3"></div>
-                    <List filter={this.state.filter} key={this.state.key} showType={false}></List>
+                    <ScheduleList params={this.state.params}  />
                 </div>
             </div>
         );

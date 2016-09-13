@@ -3,7 +3,6 @@ var PageStores  =require("../page/stores/PageStores");
 var ScheduleStore  =require("./ScheduleStore");
 var ReactRouter = require('react-router');
 var Link = ReactRouter.Link;
-var IndexLink = ReactRouter.IndexLink;
 var TypeStore = require("./TypeStore");
 var List = require("./List.react");
 var SelectType = require("./SelectType.react");

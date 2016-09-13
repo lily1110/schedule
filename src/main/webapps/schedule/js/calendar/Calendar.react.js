@@ -40,14 +40,12 @@ var Calendar = React.createClass({
             }
         });
         this.setState({"dayList": _html});
-        //return _html;
     },
     loadSchedule: function () {
         var self = this;
         var host = "https://120.76.168.214:6443";
-
+        console.log( ScheduleStore.getUser().id+"  "+ ScheduleStore.getUser().name);
         getData(host + "/rest/schedule/mine/v1/" + ScheduleStore.getUser().id, {}, function (data) {
-            //getData("../api/events.json",{},function(data){
             if (data.responseMsg == "1") {
                 self.schedules = data.schedules;
                 self.renderSchedule();
@@ -118,10 +116,9 @@ var Calendar = React.createClass({
                 $(this).css('background-color', 'rgb(243, 251, 255)');
                 var _date = new Date();
                 _date.setTime(date);
-                ScheduleStore.setCurrentDate(_date);
                 var _dateDesc = _date.format("yyyy-MM-dd");
-
-                self.renderDaySchedule(_dateDesc)
+                self.renderDaySchedule(_dateDesc);
+                ScheduleStore.setCurrentDate(_date);
             }
 
         });
